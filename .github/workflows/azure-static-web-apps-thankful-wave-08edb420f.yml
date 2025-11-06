@@ -16,29 +16,24 @@ jobs:
     name: Build and Deploy Job
 
     steps:
-      # Checkout the repo
       - uses: actions/checkout@v3
         with:
           submodules: true
           lfs: false
 
-      # Set up Node.js
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
 
-      # Install dependencies
       - name: Install dependencies
         run: npm install --force
         working-directory: ./ChargeUp
 
-      # Build the Angular app
       - name: Build Angular app
         run: npm run build -- --output-path=dist/ChargeUp --configuration production
         working-directory: ./ChargeUp
 
-      # Deploy to Azure Static Web Apps
       - name: Deploy to Azure Static Web Apps
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
@@ -46,10 +41,10 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_WAVE_08EDB420F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "ChargeUp/dist/ChargeUp" 
-          api_location: ""                        
-          output_location: "." 
-          skip_app_build: true 
+          app_location: "ChargeUp"              # <— your Angular source folder
+          output_location: "dist/ChargeUp"      # <— your built app output
+          skip_app_build: true                  # <— don’t rebuild with Oryx
+          api_location: ""                      # optional
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
@@ -60,7 +55,3 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_WAVE_08EDB420F }}
           action: "close"
-
-
-
-
