@@ -1,0 +1,21 @@
+<div class="login-header">
+  <h1 class="company-name">
+  CHARGE<span class="highlight-outline">UP</span>
+</h1>
+  <p class="subtitle">Sign in to your Account</p>
+</div>
+
+<form [formGroup]="loginForm" (ngSubmit)="onNext()">
+
+  <div class="mb-3">
+    <label>Email / Phone</label>
+    <input type="text" class="form-control" formControlName="email" />
+  </div>
+
+  <div class="mb-3 captcha-box">
+    <label>Solve: {{ captchaQuestion }}</label>
+    <input type="text" class="form-control" formControlName="captcha" />
+  </div>
+
+  <button type="submit" class="btn btn-dark mt-3">Next</button>
+</form>

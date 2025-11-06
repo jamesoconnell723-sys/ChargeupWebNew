@@ -1,0 +1,460 @@
+.redeem-records-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.toolbar input[type="text"] {
+  padding: 5px;
+  flex: 1;
+}
+
+button {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.export-btn {
+  background-color: #333;
+  color: #fff;
+  border: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #f1f1f1;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+td.confirmed {
+  color: green;
+  font-weight: bold;
+}
+
+td.pending {
+  color: orange;
+  font-weight: bold;
+}
+
+td.failed {
+  color: red;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #f9f9f9;
+}
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f5f5f5;
+  border: 1px solid #ccc;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+
+.refresh-btn:hover {
+  background: #e9e9e9;
+}
+
+.refresh-icon {
+  width: 18px;
+  height: 18px;
+}
+.right-buttons {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+
+/* Refresh & Export Buttons */
+.refresh-btn, .export-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.refresh-btn {
+  padding: 10px 16px; /* top/bottom 10px, left/right 16px */
+  font-size: 0.9rem; 
+   background: #edebeb;
+  border: 1px solid #ccc; /* optional, adjusts text size */
+}
+
+.refresh-btn:hover {
+  background: #e9e9e9;
+}
+
+.export-btn {
+  background: #000;
+  color: #fff;
+}
+
+.export-btn:hover {
+  background: #333;
+}
+
+.refresh-icon, .export-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Modal Styling */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  min-width: 350px;
+  position: relative;
+}
+
+.modal h3 {
+  margin-top: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.month-picker {
+  width: 100%;
+  padding: 8px;
+  margin: 12px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn.export-pdf, .btn.export-excel {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn.export-pdf {
+  background: #000;
+  color: #fff;
+}
+
+.btn.export-excel {
+  background: #000;
+  color: #fff;
+}
+
+.close-btn {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+.toolbar {
+  display: flex;
+  justify-content: space-between; /* left on one side, right on other */
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap; /* wrap on small screens */
+}
+
+/* Left controls: search + filter */
+.left-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px 10px;
+  background: #fff;
+}
+
+.search-icon {
+  margin-right: 6px;
+  font-size: 14px;
+  color: #666;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.filter-btn {
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 6px;
+}
+
+/* Right controls: refresh + export */
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.right-controls button {
+  display: flex;
+  align-items: center;
+}
+.right-controls .refresh-icon, .right-controls .export-icon {
+  width: 16px;
+}
+/* Backdrop inside column container */
+.modal-backdrop {
+  position: absolute;       /* relative to parent column */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3); /* semi-transparent overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+/* Modal box */
+.modal {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  width: 350px;
+  height: auto;
+  max-width: 90%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  z-index: 1001;
+}
+
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Buttons row */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+/* Month input */
+input.month-picker {
+  margin-top: 10px;
+  padding: 6px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+/* Modal backdrop constrained to the column (use absolute inside your column wrapper) */
+.modal-backdrop.column-modal {
+  position: absolute; /* make sure parent container has position: relative */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+
+/* smaller modal style (like popup in your screenshot) */
+.small-modal {
+  width: 360px;
+  max-width: 95%;
+  background: #fff;
+  padding: 18px;
+  border-radius: 6px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  position: relative;
+}
+
+/* status search input */
+.status-search {
+  width: 100%;
+  padding: 8px 10px;
+  margin: 8px 0 12px;
+  box-sizing: border-box;
+}
+
+/* status list */
+.status-list {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.status-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.status-list li {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f3f3;
+  display: flex;
+  align-items: center;
+}
+
+.status-list li:last-child { border-bottom: none; }
+
+.status-list li:hover { background: #f6f8fa; }
+
+.status-list li.selected {
+  background: #e9f2ff;
+  font-weight: 600;
+}
+
+/* modal action buttons layout */
+.modal-actions {
+  display:flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+/* close button */
+.small-modal .close-btn {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Container for pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: Arial, sans-serif;
+}
+
+/* Info text: "1-5 of 12" */
+.pagination-info {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Pagination buttons container */
+.pagination-controls {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.pagination-controls button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* Hover effect */
+.pagination-controls button:hover:not(:disabled) {
+  background: #007bff;
+  color: #fff;
+}
+
+/* Disabled buttons */
+.pagination-controls button:disabled {
+  background: #f1f1f1;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Active page */
+.pagination-controls button.active {
+  background: #007bff;
+  color: #fff;
+  font-weight: bold;
+}
+
+/* Items per page dropdown */
+.items-per-page {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.items-per-page select {
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
+}

@@ -1,0 +1,474 @@
+/* Background */
+.recharge-wrapper {
+  background: linear-gradient(135deg, #e0e7ff, #f3f6ff);
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+  padding: 40px 15px;
+  color: #333;
+}
+
+/* Glass Card Header */
+.portal-glass-card {
+  background: rgba(255,255,255,0.9);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.6);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.portal-glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0,0,0,0.12);
+}
+
+/* Section Title */
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #0d6efd, #6610f2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+/* Selected Amount */
+.selected-amount {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+}
+.note-input {
+  border: none;
+  border-bottom: 2px solid #c1c1c1;
+  padding: 6px 8px;
+  outline: none;
+  font-size: 0.95rem;
+  min-width: 200px;
+  transition: border-color 0.3s;
+}
+.note-input:focus {
+  border-color: #6610f2;
+}
+
+/* Payment Type Dropdown */
+.payment-select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  min-width: 160px;
+  transition: all 0.3s ease;
+}
+.payment-select:focus {
+  border-color: #6610f2;
+  box-shadow: 0 0 8px rgba(102,16,242,0.25);
+  outline: none;
+}
+
+/* Amount Options */
+.amount-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+.amount-btn {
+  border: 1px dashed #bbb;
+  background: #fff;
+  border-radius: 30px;
+  padding: 12px 24px;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.3s ease;
+}
+.amount-btn i {
+  color: #f1c40f;
+  margin-right: 6px;
+}
+.amount-btn.active {
+  background: linear-gradient(135deg, #0d6efd, #6610f2);
+  color: #fff;
+  border: none;
+  box-shadow: 0 6px 18px rgba(13,110,253,0.35);
+}
+.amount-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+/* Payment Methods */
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.method-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+.method-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+}
+.method-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.method-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 1.2rem;
+}
+.method-left h6 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.method-left p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+.method-right img {
+  width: 42px;
+  height: 26px;
+  object-fit: contain;
+  margin-left: 6px;
+}
+
+/* Recent Recharges */
+.recent-recharges {
+  background: rgba(255,255,255,0.95);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.6);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  padding: 16px 20px;
+}
+.section-subtitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #6610f2, #0d6efd);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+.recent-item:last-child {
+  border-bottom: none;
+}
+.recharge-amount i {
+  color: #f1c40f;
+  margin-right: 6px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .glass-card,
+  .method-card,
+  .recent-recharges {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .amount-btn {
+    flex: 1 1 45%;
+  }
+}
+/* Recent Recharges Specific */
+.recent-recharges .total-transactions {
+  background: rgba(102,16,242,0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.recent-recharges .total-transactions:hover {
+  background: rgba(102,16,242,0.15);
+}
+.transaction-icon {
+  width: 40px;
+  height: 40px;
+  background: #6610f2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  font-size: 1.2rem;
+}
+.transaction-count {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+.arrow-icon i {
+  font-size: 1.2rem;
+  color: #6610f2;
+}
+.pending-confirmation {
+  background: rgba(13,110,253,0.08);
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 500;
+  margin-top: 12px;
+}
+.confirmation-amount {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.recharge-btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.wallet-btn {
+  background-color: #6c63ff;
+}
+
+.portal-btn {
+  background-color: #3498db;
+}
+
+.recharge-btn:hover {
+  opacity: 0.9;
+}
+.recharge-btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.wallet-btn {
+  background-color: #2d22fb;
+}
+
+.recharge-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.paynow-btn {
+  padding: 6px 14px;
+  background-color: #3498db;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.paynow-btn:hover {
+  background-color: #2980b9;
+}
+.payment-screen {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.payment-form .form-control {
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.payment-form button {
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 16px;
+}
+/* ============================= */
+/* Pending Recharge Request Page */
+/* ============================= */
+
+.pending-wrapper {
+  padding-top: 20px;
+}
+
+/* Back button */
+.back-btn {
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  background: #f8f9fa;
+  border: 1px solid #ddd;
+  transition: 0.3s ease;
+}
+.back-btn:hover {
+  background: #e9ecef;
+}
+
+/* Table container */
+.pending-wrapper .glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* Table */
+.pending-wrapper table {
+  margin-bottom: 0;
+  width: 100%;
+  border-collapse: collapse;
+}
+.pending-wrapper thead {
+  background: #f5f6f8;
+}
+.pending-wrapper thead th {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 12px;
+  color: #495057;
+  text-transform: uppercase;
+}
+.pending-wrapper tbody td {
+  font-size: 14px;
+  padding: 12px;
+  color: #212529;
+  vertical-align: middle;
+  border-top: 1px solid #eee;
+}
+
+/* EXPIRE button in first column */
+.expire-btn {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  transition: 0.3s ease;
+}
+.expire-btn:hover {
+  background: #f5c6cb;
+}
+
+/* Expired Status Label */
+.expired-status {
+  background: #ffe8e8;
+  color: #d9534f;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+/* Buttons on header (Filter, Refresh) */
+.pending-wrapper .btn-outline-secondary,
+.pending-wrapper .btn-outline-primary {
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: 0.3s ease;
+}
+
+/* ============================= */
+/* Filter Modal Styles */
+/* ============================= */
+
+.filter-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+/* Semi-transparent overlay */
+.filter-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Modal box */
+.filter-content {
+  position: relative;
+  background: #fff;
+  padding: 24px;
+  width: 320px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  z-index: 1051;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Modal title */
+.filter-content h5 {
+  margin-bottom: 15px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Dropdown inside modal */
+.filter-content select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  transition: 0.3s ease;
+}
+.filter-content select:focus {
+  border-color: #007bff;
+}
+
+/* Buttons inside modal */
+.filter-content .btn {
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 6px;
+}
+
+/* ============================= */
+/* Animation */
+/* ============================= */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+

@@ -1,0 +1,260 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand ms-4" routerLink="/navbar/userlisting">Chargeup</a>
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav me-auto">
+      <li class="nav-item ms-2">
+        <a class="nav-link" routerLink="/navbar/userlisting" routerLinkActive="active">User Management</a>
+      </li>
+
+      <li class="nav-item ms-2">
+        <a class="nav-link" routerLink="/navbar/rechargerecords" routerLinkActive="active">Recharge Records</a>
+      </li>
+      <li class="nav-item ms-2">
+        <a class="nav-link" routerLink="/navbar/redeemrecords" routerLinkActive="active">Redeem Records</a>
+      </li>
+      <li class="nav-item ms-2">
+        <a class="nav-link" routerLink="/navbar/summary" routerLinkActive="active">Summary</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ms-auto align-items-center">
+      <li class="nav-item me-3 d-flex align-items-center text-white">
+        <i class="fas fa-wallet me-2"></i>
+         <strong>Balance: {{ balance }}</strong>
+        <button class="btn btn-sm btn-link text-white ms-2" (click)="refreshBalance()" title="Refresh">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </li>
+  <li class="nav-item dropdown" [class.show]="dropdownOpen">
+  <a class="nav-link d-flex align-items-center"
+     href="#"
+     (click)="toggleDropdown($event)">
+    <i class="fas fa-user-circle fa-lg text-white me-2"></i>
+    <span>{{ username }}</span>
+  </a>
+
+ <ul class="dropdown-menu dropdown-menu-end"
+    [class.show]="dropdownOpen"
+    style="position: absolute; min-width: 220px;">
+  
+  <li>
+    <a class="dropdown-item d-flex align-items-center" (click)="openChangePassword()">
+      <i class="fas fa-key me-2 text-secondary"></i> Change Password
+    </a>
+  </li>
+  
+  <li>
+    <a class="dropdown-item d-flex align-items-center" (click)="openRechargeLimit()">
+      <i class="fas fa-bolt me-2 text-warning"></i> Recharge Limit
+    </a>
+  </li>
+  
+  <li>
+    <a class="dropdown-item d-flex align-items-center" (click)="openMasterOverview()">
+      <i class="fas fa-chart-line me-2 text-success"></i> Master Accounting
+    </a>
+  </li>
+  
+  <li><hr class="dropdown-divider"></li>
+  
+  <li>
+    <a class="dropdown-item d-flex align-items-center" (click)="logout()">
+      <i class="fas fa-sign-out-alt me-2 text-danger"></i> Logout
+    </a>
+  </li>
+</ul>
+      </li>
+
+    </ul>
+  </div>
+</nav>
+
+<div class="container mt-3">
+  <router-outlet></router-outlet>
+</div>
+
+
+
+
+<!-- 🔒 Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Change Password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">
+
+          <!-- Current Password -->
+          <div class="form-group position-relative mb-3">
+            <input [type]="showPassword['current'] ? 'text' : 'password'" class="form-control"
+                   formControlName="currentPassword" placeholder="Current Password" />
+            <button type="button" class="toggle-password" (click)="toggleVisibility('current')">
+              <i [ngClass]="showPassword['current'] ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+            </button>
+          </div>
+
+          <!-- New Password -->
+          <div class="form-group position-relative mb-3">
+            <input [type]="showPassword['new'] ? 'text' : 'password'" class="form-control"
+                   formControlName="newPassword" placeholder="New Password" />
+            <button type="button" class="toggle-password" (click)="toggleVisibility('new')">
+              <i [ngClass]="showPassword['new'] ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+            </button>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group position-relative mb-3">
+            <input [type]="showPassword['confirm'] ? 'text' : 'password'" class="form-control"
+                   formControlName="confirmPassword" placeholder="Confirm Password" />
+            <button type="button" class="toggle-password" (click)="toggleVisibility('confirm')">
+              <i [ngClass]="showPassword['confirm'] ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+            </button>
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-2 mt-3">
+            <button type="submit" class="btn btn-primary flex-fill">Save</button>
+            <button type="button" class="btn btn-dark flex-fill" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Recharge Limit Modal -->
+<div class="modal fade" id="rechargeLimitModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Set Recharge Limits</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="rechargeLimitForm">
+
+          <!-- Toggle Button -->
+          <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" id="enableLimit" formControlName="enableLimit">
+            <label class="form-check-label" for="enableLimit">Enable Recharge Limit Restriction</label>
+          </div>
+
+          <!-- Monthly and Daily Limit Inputs (always visible) -->
+          <div class="mb-3">
+            <input type="number" class="form-control" formControlName="monthlyLimit" placeholder="Monthly Recharge Limit">
+          </div>
+          <div class="mb-3">
+            <input type="number" class="form-control" formControlName="dailyLimit" placeholder="Daily Recharge Limit">
+          </div>
+
+          <!-- Radio Buttons (visible only when toggle is ON) -->
+          <div class="mb-3" *ngIf="rechargeLimitForm.get('enableLimit')?.value">
+            <label class="form-label">Select Active Recharge Limit:</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" formControlName="activeLimit" value="daily" id="dailyLimitRadio">
+              <label class="form-check-label" for="dailyLimitRadio">Set Daily Limit as Active</label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" formControlName="activeLimit" value="monthly" id="monthlyLimitRadio">
+              <label class="form-check-label" for="monthlyLimitRadio">Set Monthly Limit as Active</label>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="d-flex gap-2 mt-4">
+            <button type="button" class="btn btn-outline-dark flex-fill" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-dark flex-fill" (click)="onApply()">Save</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Master Agent Overview Modal -->
+<div class="modal fade" id="masterOverviewModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Master Agent Overview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Filters -->
+        <form class="row g-2 mb-3" [formGroup]="filterForm">
+          <div class="col-md-3">
+            <input type="date" formControlName="startDate" class="form-control" />
+          </div>
+          <div class="col-md-3">
+            <input type="date" formControlName="endDate" class="form-control" />
+          </div>
+          <div class="col-md-4">
+            <select class="form-select" formControlName="agent">
+              <option value="">Filter by Agent (Optional)</option>
+              <option *ngFor="let agent of agents" [value]="agent">{{ agent }}</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button type="button" class="btn btn-primary w-100" (click)="fetchData()">Fetch</button>
+          </div>
+        </form>
+
+        <!-- Table -->
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle text-center">
+            <thead class="table-light">
+              <tr>
+                <th>Agent Name</th>
+                <th>Total Recharges</th>
+                <th>Total Redeems</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of overviewData">
+                <td>{{ row.agentName }}</td>
+                <td>{{ row.totalRecharges | number:'1.2-2' }}</td>
+                <td>{{ row.totalRedeems | number:'1.2-2' }}</td>
+              </tr>
+              <tr class="fw-bold">
+                <td>Grand Total</td>
+                <td>{{ getGrandTotal('totalRecharges') | number:'1.2-2' }}</td>
+                <td>{{ getGrandTotal('totalRedeems') | number:'1.2-2' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-2">
+          <nav>
+            <ul class="pagination pagination-sm mb-0">
+              <li class="page-item"><a class="page-link" href="#">‹</a></li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">›</a></li>
+            </ul>
+          </nav>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

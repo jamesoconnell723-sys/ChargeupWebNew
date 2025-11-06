@@ -1,0 +1,128 @@
+<div class="redeem-records-container">
+  <h2>Redeem Records</h2>
+
+  <!-- <div class="error-banner">
+    ❗ Your balance is too low to approve transactions.
+  </div> -->
+
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-area">
+      <input type="text" placeholder="Username" [(ngModel)]="searchTerm" class="search-input" />
+      <button class="export-btn" (click)="openFilterModal()">
+        <i class="bi bi-funnel"></i> Filter
+      </button>
+    </div>
+
+    <!-- Right side: Refresh + Export -->
+    <div class="action-buttons">
+      <button class="refresh-btn" (click)="refresh()">⟳ Refresh</button>
+      <button class="export-btn" (click)="export()">⬇ Export</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <!-- agent-redeem-records.html -->
+  <table class="redeem-table">
+    <thead>
+      <tr>
+        <th>Actions</th>
+        <th>Account</th>
+        <th>Amount</th>
+        <th>ServiceFee</th>
+        <th>NetAmount</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let record of paginatedRecords">
+        <td>
+          <ng-container *ngIf="record.status === 'Pending Confirmation'; else noActions">
+            <button class="btn-success btn rounded-2 pb-2 px-2" (click)="approve(record)">Approve</button>
+            <button class="btn-secondary btn ms-1 pb-2 rounded-2 px-3" (click)="reject(record)">Reject</button>
+          </ng-container>
+          <ng-template #noActions>-</ng-template>
+        </td>
+        <td>{{ record.account }}</td>
+        <td>{{ record.amount }}</td>
+        <td>{{ record.serviceFee }}</td>
+        <td>{{ record.netAmount }}</td>
+        <td>{{ record.status }}</td>
+        <td>{{ record.requestedAt | date: 'medium' }}</td>
+      </tr>
+      <tr *ngIf="paginatedRecords.length === 0">
+        <td colspan="5" class="text-center">No records found</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!-- Pagination -->
+  <div class="pagination">
+    <span>{{ showingRange }}</span>
+
+    <!-- Controls -->
+    <div class="pagination-controls">
+      <button (click)="changePage(1)" [disabled]="currentPage === 1">&lt;&lt;</button>
+      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+
+      <button class="active">{{ currentPage }}</button>
+
+      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+      <button (click)="changePage(totalPages)" [disabled]="currentPage === totalPages">&gt;&gt;</button>
+    </div>
+
+    <!-- Items per page -->
+    <div class="items-per-page">
+      <select (change)="changeItemsPerPage($event)">
+        <option [selected]="itemsPerPage === 10">10</option>
+        <option [selected]="itemsPerPage === 25">25</option>
+        <option [selected]="itemsPerPage === 50">50</option>
+      </select>
+      <span>Items per page</span>
+    </div>
+  </div>
+  <div class="modal-backdrop" *ngIf="showExportModal">
+    <div class="modal">
+      <h3>Select Month to Export</h3>
+
+      <label>
+        Month
+        <input type="month" [(ngModel)]="selectedMonth" [attr.max]="maxMonth" class="month-input"
+          (change)="clearExportError()" />
+      </label>
+
+      <div *ngIf="exportErrorMsg" class="error-msg">
+        {{ exportErrorMsg }}
+      </div>
+
+      <div class="modal-actions">
+        <button (click)="closeExportModal()">Cancel</button>
+        <button (click)="doExport('pdf')">Export PDF</button>
+        <button (click)="doExport('excel')">Export Excel</button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-backdrop" *ngIf="showFilterModal">
+    <div class="filter-modal">
+      <div class="modal-header">
+        <h4>Filter Options</h4>
+        <button class="close-btn" (click)="closeFilterModal()">×</button>
+      </div>
+
+      <div class="filter-body">
+        <div *ngFor="let status of filterOptions" class="filter-option" [class.active]="tempSelectedStatus === status"
+          (click)="tempSelectedStatus = status">
+          {{ status }}
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="apply-btn" (click)="applyFilter()">Apply</button>
+        <button class="cancel-btn" (click)="closeFilterModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

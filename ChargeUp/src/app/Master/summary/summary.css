@@ -1,0 +1,53 @@
+.summary-container {
+  padding: 20px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-control {
+  min-width: 180px;
+  padding: 6px 10px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.card {
+  padding: 15px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.card h6 {
+  margin: 8px 0;
+  font-weight: 600;
+}
+
+.card p {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.card.info { background: #f0f8ff; color: #333; }
+.card.success { background: #e9fce9; color: green; }
+.card.danger { background: #fdeaea; color: red; }
+.card.warning { background: #fff7e6; color: #b58900; }

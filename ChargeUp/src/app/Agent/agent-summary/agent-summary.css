@@ -1,0 +1,124 @@
+.dashboard-container {
+  padding: 20px;
+  font-family: "Poppins", sans-serif;
+  background-color: #f4f7fa;
+}
+
+/* 🔹 Filter Section */
+.filter-section {
+  background: #fff;
+  padding: 15px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  align-items: flex-end;
+}
+
+.filter-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-item label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.form-select,
+.form-control {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  min-width: 160px;
+}
+
+.apply-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.apply-btn:hover {
+  background-color: #0056b3;
+}
+
+/* 🔹 Summary Boxes Layout */
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.summary-box {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.summary-box:hover {
+  transform: translateY(-5px);
+}
+
+.summary-box .icon {
+  font-size: 40px;
+  margin-right: 15px;
+  opacity: 0.8;
+}
+
+.summary-box .info p {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.summary-box .info h2 {
+  margin: 5px 0 0;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+/* 🔹 Colors */
+.total-users { background: #5c9dfb; }
+.total-agents { background: #4e73df; }
+.total-recharges { background: #1cc88a; }
+.total-redeems { background: #e74a3b; }
+.pending-recharges { background: #f6c23e; color: #333; }
+.failed-redeems { background: #f87171; }
+
+.apply-btn {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.apply-btn:hover {
+  background-color: #0056b3;
+}
+
+.apply-btn.inactive {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+

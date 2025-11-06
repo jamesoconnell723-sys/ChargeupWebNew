@@ -1,0 +1,92 @@
+<div class="container mt-4">
+    <div class="card shadow-lg p-4">
+        <h3 class="mb-4 text-primary">Add New User</h3>
+
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+                <!-- Username -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label"><span class="text-danger">*</span>Username</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="username"
+                        placeholder="Enter username">
+                </div>
+
+                <!-- Full Name -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label"><span class="text-danger">*</span>Full Name</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="name"
+                        placeholder="Enter full name">
+                </div>
+
+                <!-- Phone -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Phone Number</label>
+                    <input type="text" class="form-control form-control-sm" formControlName="phoneNumber"
+                        placeholder="Enter phone number" maxlength="10">
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label"><span class="text-danger">*</span>Email</label>
+                    <input type="email" class="form-control form-control-sm" formControlName="email"
+                        placeholder="Enter email">
+                </div>
+
+                <!-- User Type -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label"><span class="text-danger">*</span>User Type</label>
+                    <select class="form-control" formControlName="roleId">
+                        <option value="">Select User Type</option>
+                        <option *ngFor="let type of roles" [value]="type.roleId">
+                            {{ type.roleName }}
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Parent User -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Parent User</label>
+                    <select class="form-control" formControlName="parentType">
+                        <option value="">-- Select Parent --</option>
+                        <option *ngFor="let p of parentUsers" [value]="p.userId">
+                            {{ p.userType }} - {{ p.name }} ({{ p.username }})
+                        </option>
+                    </select>
+                </div>
+
+
+                <!-- Password -->
+                <div class="col-md-6 mb-3 position-relative">
+                    <label class="form-label"><span class="text-danger">*</span>Password</label>
+                    <input [type]="showPassword ? 'text' : 'password'" class="form-control form-control-sm"
+                        formControlName="password" placeholder="Enter password">
+                    <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" (click)="togglePassword()"
+                        class="toggle-icon"></i>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="col-md-6 mb-3 position-relative">
+                    <label class="form-label"><span class="text-danger">*</span>Confirm Password</label>
+                    <input [type]="showConfirmPassword ? 'text' : 'password'" class="form-control form-control-sm"
+                        formControlName="confirmPassword" placeholder="Re-enter password">
+                    <i class="bi" [ngClass]="showConfirmPassword ? 'bi-eye-slash' : 'bi-eye'"
+                        (click)="toggleConfirmPassword()" class="toggle-icon"></i>
+                    <div *ngIf="userForm.errors?.['mismatch'] && userForm.get('confirmPassword')?.touched"
+                        class="text-danger small">
+                        Passwords do not match
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button class="btn btn-primary px-5 me-3" type="submit" [disabled]="userForm.invalid">
+                    Confirm
+                </button>
+                <button class="btn btn-secondary px-5" type="button" (click)="closeAddUser()">
+                    Cancel
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

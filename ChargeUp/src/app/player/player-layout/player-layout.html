@@ -1,0 +1,84 @@
+<!-- Global Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-4">
+  <!-- Brand -->
+  <a class="navbar-brand fw-bold text-white me-4" routerLink="/player/recharge">CHARGEUP</a>
+
+  <!-- Recharge/Redeem/Wallet/GiftCard Nav Items -->
+  <div class="collapse navbar-collapse">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-1" routerLink="/player/recharge" routerLinkActive="active">
+          <i class="fas fa-bolt"></i> Recharge
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-1" routerLink="/player/redeem" routerLinkActive="active">
+          <i class="fas fa-gift"></i> Redeem
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-1" routerLink="/player/wallet" routerLinkActive="active">
+          <i class="fas fa-wallet"></i> Wallet
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link d-flex align-items-center gap-1" routerLink="/player/giftcard" routerLinkActive="active">
+          <i class="fas fa-credit-card"></i> Gift Card
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Profile Dropdown -->
+  <div class="ms-auto">
+    <div class="dropdown">
+      <button class="btn btn-profile" type="button" id="profileMenu" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-user-circle fa-lg text-white"></i><span class="text-white ps-2">{{this.username}}</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileMenu">
+        <li>
+          <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+            Change Password
+          </button>
+        </li>
+        <li><a class="dropdown-item" href="#">Help Videos</a></li>
+        <li><a class="dropdown-item" href="#">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Global Change Password Modal -->
+<div class="modal fade" id="changePasswordModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-3">
+      <div class="modal-header">
+        <h5 class="modal-title">Change Password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="changePasswordForm">
+          <div class="mb-3">
+            <label class="form-label">Current Password</label>
+            <input type="password" class="form-control" formControlName="currentPassword">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">New Password</label>
+            <input type="password" class="form-control" formControlName="newPassword">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" formControlName="confirmPassword">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" (click)="savePassword()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main content for screens -->
+<router-outlet></router-outlet>

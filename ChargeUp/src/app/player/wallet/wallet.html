@@ -1,0 +1,128 @@
+<div class="wallet-wrapper py-5">
+
+  <!-- Main Wallet View -->
+  <div *ngIf="viewMode === 'main'" class="wallet-card-wrapper">
+    <div class="wallet-card p-4">
+
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="section-title mb-0"><i class="fas fa-wallet"></i> Available Balance</h5>
+        <span class="balance-amount"><i class="fas fa-coins"></i> {{balance}}</span>
+      </div>
+
+      <button class="btn wallet-btn w-100" (click)="cashout()">Cashout →</button>
+
+      <p class="note mt-3">
+        Did you know? You can use Wallet funds to do Instant Recharge. Want to do Recharge?
+      </p>
+
+      <!-- Recent Cash Out History -->
+      <div class="recent-card glass-card p-3 mt-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <div class="fw-bold">Recent Cashouts</div>
+          <button class="btn-link" (click)="viewWalletTransactions()">→</button>
+        </div>
+        <div *ngIf="recentCashouts.length === 0" class="mt-2 text-muted">No recent cash outs.</div>
+        <div *ngIf="recentCashouts.length > 0" class="mt-2">
+          <div *ngFor="let txn of recentCashouts" class="transaction-item">
+            🪙 {{ txn.Amount }} — {{ txn.Status }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wallet Transactions Page -->
+  <div *ngIf="viewMode === 'transactions'" class="wallet-transactions">
+    <div class="transaction-header d-flex justify-content-between align-items-center mb-3">
+      <button class="btn btn-outline-secondary" (click)="backToWallet()">
+        <i class="fas fa-arrow-left"></i> Back
+      </button>
+      <h5>Wallet Transactions</h5>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Mode</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Date Created</th>
+            <th>Redeem / Cash Out Remark</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let txn of allTransactions">
+            <td>{{ txn.TransactionType }}</td>
+            <td>{{ txn.Mode || '-' }}</td>
+            <td>{{ txn.Amount }}</td>
+            <td>{{ txn.Status }}</td>
+            <td>{{ txn.CreatedAt | date:'dd/MM/yyyy, h:mm:ss a' }}</td>
+            <td>{{ txn.Remark || '-' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Cash Out Modal -->
+  <div class="modal-overlay" *ngIf="showCashoutModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h5>Cash Out</h5>
+        <button class="btn-close" (click)="closeCashoutModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Available Balance:</strong> <i class="fas fa-coins"></i> {{ balance }}</p>
+        <p class="note">You can use your wallet funds for instant recharges! Want to recharge instead?</p>
+
+        <div class="amount-display text-center my-3">
+          <span class="fs-2 fw-bold">🪙 {{ selectedCashoutAmount }}</span>
+        </div>
+
+        <div class="mb-3">
+          <label for="methodSelect" class="form-label">Select Method</label>
+          <select id="methodSelect" class="form-select" [(ngModel)]="cashoutMethod">
+            <option value="">-- Select Method --</option>
+            <option value="giftcard">Gift Card</option>
+            <option value="pushcard">Push to Card</option>
+          </select>
+        </div>
+
+        <div *ngIf="cashoutMethod === 'giftcard'" class="text-center mt-3">
+          <button class="btn btn-primary w-100" (click)="goToGiftCard()">Proceed to Gift Card →</button>
+        </div>
+
+        <div *ngIf="cashoutMethod === 'pushcard'">
+          <div class="mb-2">
+            <label>Name</label>
+            <input type="text" class="form-control" [(ngModel)]="pushCardRecipient.name">
+          </div>
+          <div class="mb-2">
+            <label>Card Email</label>
+            <input type="email" class="form-control" [(ngModel)]="pushCardRecipient.email">
+          </div>
+          <div class="mb-2">
+            <label>Card Phone</label>
+            <input type="text" class="form-control" [(ngModel)]="pushCardRecipient.phone">
+          </div>
+          <div class="mb-2">
+            <label>Notes</label>
+            <textarea class="form-control" [(ngModel)]="pushCardRecipient.notes"></textarea>
+          </div>
+          <div class="text-end mt-3">
+            <button class="btn btn-secondary me-2" (click)="closeCashoutModal()">Cancel</button>
+            <button class="btn btn-success" (click)="submitPushCard()">Submit</button>
+          </div>
+        </div>
+
+        <div *ngIf="cashoutMethod === ''" class="text-end">
+          <button class="btn btn-primary" (click)="confirmCashout()">Confirm Cash Out</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>

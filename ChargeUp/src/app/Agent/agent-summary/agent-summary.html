@@ -1,0 +1,82 @@
+<div class="dashboard-container">
+
+  <!-- 🔹 Filter Section -->
+  <div class="filter-section">
+    <div class="filter-row">
+      <div class="filter-item">
+        <label>Username</label>
+        <select [(ngModel)]="selectedUser" class="form-select">
+          <option value="">Select User</option>
+          <option *ngFor="let user of users" [value]="user.userId">{{ user.username }}</option>
+        </select>
+      </div>
+
+      <div class="filter-item">
+        <label>Start Date</label>
+        <input type="date" [(ngModel)]="startDate" class="form-control" required>
+      </div>
+
+      <div class="filter-item">
+        <label>End Date</label>
+        <input type="date" [(ngModel)]="endDate" class="form-control" required>
+      </div>
+
+      <div class="filter-item">
+        <button class="apply-btn" (click)="applyFilter()" [class.inactive]="!startDate || !endDate">
+          Apply Filter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🔹 Summary Boxes -->
+  <div class="summary-cards">
+    <div class="summary-box total-users">
+      <div class="icon">👤</div>
+      <div class="info">
+        <p>Total Users</p>
+        <h2>{{ summary.totalUsers }}</h2>
+      </div>
+    </div>
+
+    <!-- <div class="summary-box total-agents">
+      <div class="icon">🧑‍💼</div>
+      <div class="info">
+        <p>Total Agents</p>
+        <h2>{{ summary.totalAgents }}</h2>
+      </div>
+    </div> -->
+
+    <div class="summary-box total-recharges">
+      <div class="icon">⚡</div>
+      <div class="info">
+        <p>Total Recharges</p>
+        <h2>{{ summary.totalRecharges }}</h2>
+      </div>
+    </div>
+
+    <div class="summary-box total-redeems">
+      <div class="icon">💸</div>
+      <div class="info">
+        <p>Total Redeems</p>
+        <h2>{{ summary.totalRedeems }}</h2>
+      </div>
+    </div>
+
+    <div class="summary-box pending-recharges">
+      <div class="icon">⏳</div>
+      <div class="info">
+        <p>Pending Recharges</p>
+        <h2>{{ summary.pendingRecharges }}</h2>
+      </div>
+    </div>
+
+    <div class="summary-box failed-redeems">
+      <div class="icon">❌</div>
+      <div class="info">
+        <p>Failed Redeems</p>
+        <h2>{{ summary.failedRedeems }}</h2>
+      </div>
+    </div>
+  </div>
+</div>

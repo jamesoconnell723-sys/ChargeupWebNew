@@ -1,0 +1,32 @@
+<div class="login-header">
+  <h1 class="company-name">
+  CHARGE<span class="highlight-outline">UP</span>
+</h1>
+  <p class="subtitle">Sign in to your Account</p>
+</div>
+
+    <form [formGroup]="passwordForm">
+   <div class="mb-3">
+    <label>Email / Phone</label>
+    <input type="text" class="form-control" formControlName="email"/>
+  </div>
+      <label>Password</label>
+      <div class="password-box">
+        <input [type]="showPassword ? 'text' : 'password'" formControlName="password" class="input-box"/>
+        <button type="button" class="eye-btn" (click)="togglePassword()">
+    <span *ngIf="showPassword">🙈</span> <!-- Eye slash for hide -->
+    <span *ngIf="!showPassword">👁️</span> <!-- Eye for show -->
+  </button>
+      </div>
+      <div *ngIf="passwordForm.get('password')?.invalid && passwordForm.get('password')?.touched" class="error">
+        Please enter your password.
+      </div>
+
+      <div class="remember-me">
+        <input type="checkbox" formControlName="rememberMe" />
+        <span>Remember me (30 days)</span>
+      </div>
+
+      <button type="button" class="btn-next" (click)="onLogin()">LOGIN</button>
+      <button type="button" class="btn-back" (click)="onBack()">BACK</button>
+    </form>

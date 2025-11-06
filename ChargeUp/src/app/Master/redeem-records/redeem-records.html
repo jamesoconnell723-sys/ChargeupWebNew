@@ -1,0 +1,136 @@
+<div class="page-wrapper">
+  <h2 class="pt-2">Redeem Records</h2>
+  <div class="toolbar">
+
+    <!-- Left side: Search + Filter -->
+    <div class="left-controls">
+      <div class="search-wrapper">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" placeholder="Search by User Name" class="search-input" [(ngModel)]="search"
+          (input)="onSearch()" />
+      </div>
+      <button class="btn filter-btn" (click)="openFilterModal()"><i class="bi bi-funnel">Filter</i></button>
+    </div>
+
+    <!-- Right side: Refresh + Export -->
+    <div class="right-controls">
+      <button class="btn btn-sm btn-link text-success refresh-btn" (click)="refresh()" title="Refresh">
+        <i class="fas fa-sync-alt"></i>
+        <span class="ms-1">Refresh</span>
+      </button>
+
+
+      <button class="btn btn-dark ms-2" (click)="openExportModal()">
+        <i class="fas fa-download"></i>
+        <span class="ms-1">Export</span>
+      </button>
+    </div>
+  </div>
+
+  <table class="records-table" *ngIf="!loading; else loadingTpl">
+    <thead>
+      <tr>
+        <!-- <th>Actions</th> -->
+        <th>Account</th>
+        <th>Redeemed</th>
+        <th>Parent</th>
+        <th>ServiceFee</th>
+        <th>Remarks</th>
+        <th>Status</th>
+        <th>RedeemDate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let record of filteredRecords">
+        <!-- <td>{{ record.redeemId }}</td> -->
+       <td>{{ record.username || record.userId }}</td>
+        <td>{{ record.amount }}</td>
+        <td>{{ record.processedByName || record.processedBy }}</td>
+        <td>{{ record.serviceFee}}</td>
+        <td>{{ record.remarks }}</td>
+        <td>{{ record.status }}</td>
+        <td>{{ record.requestedAt| date:'short' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #loadingTpl>
+    <p>Loading records...</p>
+  </ng-template>
+  
+  <div class="pagination">
+  <div class="pagination-info">
+    {{ showingRange }}
+  </div>
+
+  <div class="pagination-controls">
+    <button (click)="changePage(1)" [disabled]="currentPage === 1">«</button>
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">‹</button>
+
+    <button *ngFor="let page of [].constructor(totalPages); let i = index"
+            [class.active]="currentPage === (i + 1)"
+            (click)="changePage(i + 1)">
+      {{ i + 1 }}
+    </button>
+
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">›</button>
+    <button (click)="changePage(totalPages)" [disabled]="currentPage === totalPages">»</button>
+  </div>
+
+  <div class="items-per-page">
+    <label for="items">Items per page:</label>
+    <select id="items" (change)="changeItemsPerPage($event)" [value]="itemsPerPage">
+      <option *ngFor="let size of [5, 10, 20, 50]" [value]="size">{{ size }}</option>
+    </select>
+  </div>
+</div>
+</div>
+
+
+<!-- Modal -->
+<div class="page-wrapper">
+  <!-- page content -->
+
+  <!-- Modal -->
+  <div class="modal-backdrop" *ngIf="showExportModal">
+    <div class="modal">
+      <h3>Select Month to Export</h3>
+      <label>Month</label>
+      <input type="month" [(ngModel)]="selectedMonth" class="month-picker" />
+        <span *ngIf="loading">Downloading...</span>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" (click)="closeExportModal()">Cancel</button>
+        <button class="btn export-pdf" (click)="exportPdf()" [disabled]="loading">Export PDF</button>
+        <button class="btn export-excel" (click)="exportExcel()" [disabled]="loading">Export Excel</button>
+      </div>
+      <div>
+
+        <button class="close-btn" (click)="closeExportModal()">×</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Filter Modal (shows status list + search + Apply/Cancel) -->
+<div class="modal-backdrop column-modal" *ngIf="showFilterModal">
+  <div class="modal small-modal">
+    <h4>Filter Options</h4>
+
+    <div class="status-list">
+      <ul>
+        <li *ngFor="let s of statusOptions" (click)="selectTempStatus(s)" [class.selected]="tempSelectedStatus === s">
+          <span>{{ s }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-primary" (click)="applyFilter()">Apply</button>
+      <button class="btn btn-secondary" (click)="cancelFilter()">Cancel</button>
+    </div>
+
+    <button class="close-btn" (click)="cancelFilter()">×</button>
+  </div>
+</div>
+

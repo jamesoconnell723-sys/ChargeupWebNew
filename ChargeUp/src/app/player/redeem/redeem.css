@@ -1,0 +1,432 @@
+/* ===================== */
+/* General Wrapper Styles */
+/* ===================== */
+.redeem-wrapper {
+  min-height: 100vh;
+  background: #f5f7fa;
+  font-family: 'Segoe UI', sans-serif;
+  color: #333;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* ===================== */
+/* Glass Card / Main Box */
+/* ===================== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+.glass-card:hover {
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+/* ===================== */
+/* Section Titles */
+/* ===================== */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* ===================== */
+/* Selected Amount Box */
+/* ===================== */
+.selected-amount-box {
+  background: #f9fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+}
+.selected-amount-box .coin-icon {
+  font-size: 1.5rem;
+}
+.selected-amount-box input {
+  border: none;
+  outline: none;
+  font-size: 0.95rem;
+  background: transparent;
+}
+
+/* ===================== */
+/* Amount Buttons */
+/* ===================== */
+.amount-btn {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.amount-btn.active {
+  background: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+.amount-btn:hover {
+  background: #f3f4f6;
+}
+
+/* ===================== */
+/* Redeem Button */
+/* ===================== */
+.redeem-btn {
+  background: #0d6efd;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+.redeem-btn:hover {
+  background: #0b5ed7;
+}
+
+/* ===================== */
+/* Recent Card */
+/* ===================== */
+.recent-card {
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.recent-card:hover {
+  transform: translateY(-2px);
+}
+
+/* ===================== */
+/* Table Styling */
+/* ===================== */
+.table {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+.table th, .table td {
+  vertical-align: middle;
+  text-align: center;
+}
+.table thead {
+  background-color: #232525;
+}
+.badge.bg-warning {
+  font-size: 0.85rem;
+  padding: 5px 8px;
+}
+.table .btn-sm {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+}
+
+/* ===================== */
+/* Modal Overlay Styles */
+/* ===================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* ===================== */
+/* Modal Card Styling */
+/* ===================== */
+.modal-card {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  padding: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+  position: relative;
+  animation: slideIn 0.3s ease-out;
+}
+.filter-modal-card {
+  max-width: 420px;
+}
+@keyframes slideIn {
+  0% { transform: translateY(-30px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* ===================== */
+/* Modal Header */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.modal-header h5 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+/* ===================== */
+/* Close Button */
+.btn-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #555;
+}
+.btn-close:hover {
+  color: #000;
+}
+
+/* ===================== */
+/* Modal Body */
+.modal-body {
+  font-size: 0.95rem;
+}
+.modal-body input.form-control {
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+.modal-body .btn {
+  border-radius: 6px;
+}
+
+/* ===================== */
+/* Form Check */
+.form-check {
+  display: flex;
+  align-items: center;
+}
+.form-check .form-check-input {
+  margin-right: 10px;
+}
+
+/* ===================== */
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .d-flex.justify-content-between.mb-3 {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .form-control.d-inline-block {
+    width: 100% !important;
+  }
+  .selected-amount-box {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+@media (max-width: 768px) {
+  .filter-search-wrapper {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .filter-search-wrapper input.form-control {
+    width: 100%;
+  }
+}
+
+/* ===================== */
+/* Pending Redeem Card */
+.pending-redeem-wrapper {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+.pending-redeem-wrapper:hover {
+  box-shadow: 0 8px 22px rgba(131, 242, 252, 0.14);
+}
+
+/* ===================== */
+/* Filter & Search Area */
+.filter-search-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.filter-search-wrapper input.form-control {
+  width: 220px;
+}
+.filter-search-wrapper .btn {
+  height: 38px;
+}
+.filter-badges {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.filter-badges span {
+  padding: 4px 8px;
+  font-size: 0.8rem;
+  border-radius: 12px;
+  background: #e0f0ff;
+  color: #0d6efd;
+}
+
+/* ===================== */
+/* Buttons */
+.btn-outline-secondary,
+.btn-outline-primary,
+.btn-outline-success {
+  border-radius: 6px;
+}
+
+/* ===================== */
+/* Pending Redeem Header */
+.pending-redeem-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+.pending-redeem-left,
+.pending-redeem-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-filter {
+  background: linear-gradient(90deg, #6a11cb, #2575fc);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.btn-filter:hover {
+  background: linear-gradient(90deg, #939596, #57b2ef);
+}
+.btn-refresh {
+  background: linear-gradient(90deg, #939596, #57b2ef);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-weight: 500;
+}
+.btn-refresh:hover {
+  background: linear-gradient(90deg, #009e8f, #7ebf2d);
+}
+
+/* ===================== */
+/* Misc Styles */
+.transactions-card {
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.total-count {
+  font-size: 2rem;
+  font-weight: bold;
+}
+.no-transactions-message {
+  margin-top: 10px;
+  color: #555;
+  font-size: 0.95rem;
+}
+.no-transactions-message p {
+  margin: 4px 0;
+}
+.pending-link {
+  color: #0d6efd;
+  font-weight: bold;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.pending-link:hover {
+  color: #0b5ed7;
+}
+.transaction-item {
+  font-size: 0.95rem;
+  padding: 4px 0;
+}
+.clickable {
+  cursor: pointer;
+  text-decoration: underline;
+}
+.total-transactions-btn {
+  background-color: #c1c0c0;
+  border: 1px solid #ddd;
+  color: #333;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.total-transactions-btn:hover {
+  background-color: #a39c9c;
+  cursor: pointer;
+}
+
+.pagination-wrapper {
+  position: relative;
+  padding: 10px 0;
+}
+
+.pagination-controls {
+  flex: 1;
+  justify-content: center;
+}
+
+.items-per-page-selector {
+  position: absolute;
+  right: 0;
+}
+
+.items-dropdown {
+  min-width: 90px;
+  padding: 4px 8px;
+  font-size: 0.875rem;
+  border-radius: 8px;
+}
+
+/* Buttons */
+.pagination-controls button {
+  min-width: 40px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .pagination-wrapper {
+    flex-direction: column;
+    text-align: center;
+  }
+  .pagination-controls {
+    order: 1;
+    justify-content: center;
+  }
+  .items-per-page-selector {
+    position: static;
+    margin-top: 10px;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,272 @@
+import { Component, Inject, PLATFORM_ID, HostListener } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Auth } from '../../services/auth';
+import { User } from '../../services/user';
+declare var bootstrap: any;
+
+@Component({
+  selector: 'app-master-navbar',
+  standalone: false,
+  templateUrl: './master-navbar.html',
+  styleUrls: ['./master-navbar.css']
+})
+export class MasterNavbar {
+  balance: number = 0;
+  username: string = '';
+  email: string = '';
+  dropdownOpen = false;
+
+  // ✅ Forms
+   rechargeLimitForm!: FormGroup;
+  changePasswordForm: FormGroup;
+
+  // ✅ For show/hide password
+  showPassword: any = { current: false, new: false, confirm: false };
+  currentUserId: number = 0;
+  currentUser:any;
+
+  filterForm!: FormGroup;
+  agents: string[] = ['Danny', 'Alex', 'John'];
+  overviewData: any[] = [{ agentName: 'Danny', totalRecharges: 11965.0, totalRedeems: 0.0 }];
+
+  menus: any[] = [];
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router,
+    private fb: FormBuilder,private auth: Auth, private user:User
+  ) {
+    // Recharge Limit form
+this.rechargeLimitForm = this.fb.group({
+      enableLimit: [false], // Toggle
+      monthlyLimit: ['', [Validators.min(0)]],
+      dailyLimit: ['', [Validators.min(0)]],
+      activeLimit: ['daily'] // radio button
+    });
+
+    this.rechargeLimitForm.get('enableLimit')?.valueChanges.subscribe(enabled => {
+      if (enabled) {
+        this.rechargeLimitForm.get('monthlyLimit')?.enable();
+        this.rechargeLimitForm.get('dailyLimit')?.enable();
+      } else {
+        this.rechargeLimitForm.get('monthlyLimit')?.disable();
+        this.rechargeLimitForm.get('dailyLimit')?.disable();
+      }
+    });
+  
+
+    // Change Password form
+    this.changePasswordForm = this.fb.group(
+      {
+        currentPassword: ['', Validators.required],
+        newPassword: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', Validators.required]
+      },
+      { validators: this.passwordMatchValidator }
+    );
+
+     this.filterForm = this.fb.group({
+      startDate: [''],
+      endDate: [''],
+      agent: ['']
+    });
+  }
+
+ngOnInit(): void {
+   if (isPlatformBrowser(this.platformId)) {
+    // ✅ Try to read from the current session first
+    const session = JSON.parse(localStorage.getItem('user') || '{}');
+    const sessionEmail = session?.email;
+
+    // ✅ Then check loginEmail (set right after login)
+    const loginEmail = localStorage.getItem('loginEmail');
+
+    // ✅ Finally, check if any remembered credentials match and are still valid
+    const rememberedData = localStorage.getItem('remembered');
+    let rememberedEmail = null;
+    if (rememberedData) {
+      const remembered = JSON.parse(rememberedData);
+      const now = new Date();
+      const expire = new Date(remembered.expire);
+      if (expire > now) {
+        rememberedEmail = remembered.email || remembered.identifier;
+      } else {
+        localStorage.removeItem('remembered'); // expired cleanup
+      }
+    }
+
+    // ✅ Priority: session > loginEmail > remembered
+    const activeEmail = sessionEmail || loginEmail || rememberedEmail;
+
+    if (activeEmail) {
+      this.email = activeEmail;
+      this.fetchUserDetails(activeEmail);
+    } else {
+      console.warn('⚠️ No active user email found, redirecting to login');
+      this.router.navigate(['/login']);
+    }
+   }
+  }
+fetchUserDetails(email: string) {
+    this.user.getUserByEmail(email).subscribe({
+      next: (res) => {
+        this.currentUser = res;
+        this.username = res.username;
+        this.balance = res.balance ?? 0;
+        this.currentUserId = res.userId;
+        sessionStorage.setItem('balance', this.balance.toString());
+        sessionStorage.setItem('username', this.username);
+        console.log('✅ Current User:', this.currentUser);
+      },
+      error: (err) => {
+        console.error('❌ Failed to load user details:', err);
+      }
+    });
+  }
+
+ refreshBalance() {
+    if (!this.email) return;
+    console.log('🔄 Refreshing balance...');
+    this.user.getUserByEmail(this.email).subscribe({
+      next: (res) => {
+        this.balance = res.balance ?? 0;
+        sessionStorage.setItem('balance', this.balance.toString());
+        console.log('✅ Updated balance:', this.balance);
+      },
+      error: (err) => {
+        console.error('❌ Failed to refresh balance:', err);
+      }
+    });
+  }
+
+  logout() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('session');
+  localStorage.removeItem('loginEmail');
+  sessionStorage.clear(); 
+
+  this.router.navigate(['/login']);
+}
+
+
+  
+
+  toggleDropdown(event: Event) {
+    event.preventDefault();
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  // Close dropdown when clicking outside
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: Event) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.nav-item.dropdown')) {
+      this.dropdownOpen = false;
+    }
+  }
+
+  // ---------------------------
+  // 🔋 Recharge Limit Modal
+  // ---------------------------
+  openRechargeLimit() {
+    const modalEl = document.getElementById('rechargeLimitModal');
+    const modal = new bootstrap.Modal(modalEl!);
+    modal.show();
+  }
+
+onRechargeLimitSubmit(): void {
+    if (this.rechargeLimitForm.valid) {
+      console.log('Recharge Limit Form Data:', this.rechargeLimitForm.value);
+      // Here you can call your API to save the limits
+    } else {
+      console.log('Form is invalid');
+      this.rechargeLimitForm.markAllAsTouched();
+    }
+  }
+  onApply(): void {
+    if (this.rechargeLimitForm.valid) {
+      console.log('Applied Values:', this.rechargeLimitForm.value);
+      // Call API here if needed
+    } else {
+      this.rechargeLimitForm.markAllAsTouched();
+    }
+  }
+  // ---------------------------
+  // 🔒 Change Password Modal
+  // ---------------------------
+  openChangePassword() {
+    const modalEl = document.getElementById('changePasswordModal');
+    const modal = new bootstrap.Modal(modalEl!);
+    modal.show();
+  }
+
+  toggleVisibility(field: string) {
+    this.showPassword[field] = !this.showPassword[field];
+  }
+
+  onChangePassword() {
+    if (!this.changePasswordForm) return;
+
+    if (this.changePasswordForm.invalid) {
+      // mark all controls as touched so validations show
+      Object.values(this.changePasswordForm.controls).forEach(c => c.markAsTouched());
+      return;
+    }
+
+    const newPassword = this.changePasswordForm.get('newPassword')!.value;
+    const currentPassword = this.changePasswordForm.get('currentPassword')!.value;
+
+    const payload = {
+      userId: this.currentUserId,
+      currentPassword: currentPassword, // optional on server side validation
+      newPassword: newPassword
+    };
+
+    this.auth.changePassword(payload).subscribe({
+      next: res => {
+        // success
+        console.log('Password changed', res);
+        const modalEl = document.getElementById('changePasswordModal');
+        const modal = bootstrap.Modal.getInstance(modalEl!);
+        modal?.hide();
+        this.changePasswordForm.reset();
+      },
+      error: err => {
+        // handle errors: show toast or set form errors accordingly
+        console.error('Failed change password', err);
+      }
+    });
+  }
+
+  // ✅ Validator for password confirm
+  private passwordMatchValidator(form: FormGroup) {
+    const newPass = form.get('newPassword')?.value;
+    const confirmPass = form.get('confirmPassword')?.value;
+    return newPass === confirmPass ? null : { mismatch: true };
+  }
+
+ openMasterOverview() {
+    const modalEl = document.getElementById('masterOverviewModal');
+    const modal = new bootstrap.Modal(modalEl!);
+    modal.show();
+  }
+
+  fetchData() {
+    const filters = this.filterForm.value;
+    console.log('Fetching with filters:', filters);
+
+    // 👉 Call API here to get data based on filters
+    // Example static data:
+    this.overviewData = [
+      { agentName: filters.agent || 'Danny', totalRecharges: 11965.0, totalRedeems: 0.0 }
+    ];
+  }
+
+  getGrandTotal(field: 'totalRecharges' | 'totalRedeems') {
+    return this.overviewData.reduce((sum, row) => sum + row[field], 0);
+  }
+
+  
+}

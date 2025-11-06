@@ -1,0 +1,50 @@
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content p-4">
+      <h4 class="mb-3 text-primary">Edit User</h4>
+
+      <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+
+        <!-- Username -->
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-control form-control-sm" formControlName="username" placeholder="Enter username">
+        </div>
+
+        <!-- Full Name -->
+        <div class="mb-3">
+          <label class="form-label">Full Name</label>
+          <input type="text" class="form-control form-control-sm" formControlName="name" placeholder="Enter full name">
+        </div>
+
+        <!-- Email -->
+        <div class="mb-3">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-control form-control-sm" formControlName="email" placeholder="Enter email">
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3 position-relative">
+          <label class="form-label">Password</label>
+          <input [type]="showPassword ? 'text' : 'password'" class="form-control form-control-sm" formControlName="password" placeholder="Enter new password">
+          <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" (click)="togglePassword()" class="toggle-icon"></i>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn btn-primary w-100" [disabled]="editUserForm.invalid">
+          Update User
+        </button>
+
+      </form>
+
+      <!-- Status Message -->
+      <div *ngIf="message" class="alert mt-3" [ngClass]="{
+        'alert-success': message.startsWith('✅'),
+        'alert-danger': message.startsWith('❌')
+      }">
+        {{ message }}
+      </div>
+
+    </div>
+  </div>
+</div>

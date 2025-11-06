@@ -1,0 +1,47 @@
+.container {
+  max-width: 600px;
+}
+
+.card {
+  border-radius: 12px;
+  background: #fff;
+}
+
+h3 {
+  font-weight: 600;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px;
+}
+.toggle-icon {
+  position: absolute;
+  right: 10px;
+  top: 36px;
+  cursor: pointer;
+  color: #6c757d;
+}
+.text-danger {
+  font-weight: bold;
+}
+
+.text-center button {
+  min-width: 120px;
+}
+
+.card {
+  border-radius: 1rem;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.toggle-icon {
+  position: absolute;
+  top: 36px;
+  right: 12px;
+  cursor: pointer;
+}

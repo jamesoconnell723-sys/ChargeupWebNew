@@ -1,0 +1,73 @@
+<div class="summary-container">
+  <h3>Summary</h3>
+
+  <!-- Filter Form -->
+  <form [formGroup]="filterForm" (ngSubmit)="applyFilter()">
+    <div class="filter-row">
+      <!-- Username Dropdown -->
+      <div class="form-group">
+        <label>Username</label>
+        <select formControlName="username" class="form-control">
+          <option value="">Select username</option>
+          <option *ngFor="let user of users" [value]="user.username">{{ user.username }}</option>
+        </select>
+      </div>
+
+      <!-- Start Date -->
+      <div class="form-group">
+        <label>Start Date</label>
+        <input type="date" formControlName="startDate" class="form-control" />
+      </div>
+
+      <!-- End Date -->
+      <div class="form-group">
+        <label>End Date</label>
+        <input type="date" formControlName="endDate" class="form-control" />
+      </div>
+
+      <!-- Apply Button -->
+      <div class="form-group">
+        <button type="submit" class="btn btn-dark">Apply Filter</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Summary Cards -->
+  <div *ngIf="summaryData" class="cards">
+    <div class="card info">
+      <i class="bi bi-people"></i>
+      <h6>Total User</h6>
+      <p>{{ summaryData.totalUser }}</p>
+    </div>
+
+    <div class="card info">
+      <i class="bi bi-person-badge"></i>
+      <h6>Total Agent</h6>
+      <p>{{ summaryData.totalAgent }}</p>
+    </div>
+
+    <div class="card success">
+      <i class="bi bi-wallet2"></i>
+      <h6>Total Recharges</h6>
+      <p>{{ summaryData.totalRecharges }}</p>
+    </div>
+
+    <div class="card danger">
+      <i class="bi bi-gift"></i>
+      <h6>Total Redeems</h6>
+      <p>{{ summaryData.totalRedeems }}</p>
+    </div>
+
+    <div class="card warning">
+      <i class="bi bi-hourglass-split"></i>
+      <h6>Pending Recharges</h6>
+      <p>{{ summaryData.pendingRecharges }}</p>
+    </div>
+
+    <div class="card danger">
+      <i class="bi bi-exclamation-circle"></i>
+      <h6>Failed Redeems</h6>
+      <p>{{ summaryData.failedRedeems }}</p>
+    </div>
+  </div>
+</div>

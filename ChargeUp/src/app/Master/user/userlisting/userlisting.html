@@ -1,0 +1,348 @@
+<div class="page-wrapper">
+  <div class="top-bar">
+    <h2 class="pt-2">User Management</h2>
+
+    <div class="controls-row">
+      <div class="search-wrapper">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" placeholder="Search by name or email" class="search-input" [(ngModel)]="search"
+          (input)="onSearch()" />
+      </div>
+
+      <button class="btn btn-primary" (click)="openAddUser()">
+        <i class="bi bi-person"></i> Add New User
+      </button>
+    </div>
+  </div>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Actions</th>
+        <th>User Name</th>
+        <th>Email</th>
+        <th>Parent User</th>
+        <th>User Type</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>
+          <div class="dropdown">
+            <button class="btn btn-light btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-gear-fill"></i>
+            </button>
+
+            <!-- Player Dropdown -->
+            <ul *ngIf="user.roleName?.toLowerCase() === 'player'" class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" (click)="openRedeem(user)">Redeem</a></li>
+              <li><a class="dropdown-item disabled">Recharge</a></li>
+              <li><a class="dropdown-item" (click)="openWallet(user)">Wallet</a></li>
+              <li><a class="dropdown-item" (click)="viewKey(user)">View Key 🔑</a></li>
+              <li><a class="dropdown-item" (click)="editUser(user)">Edit</a></li>
+              <li><a class="dropdown-item text-danger" (click)="openDeleteModal(user)">Delete</a></li>
+            </ul>
+
+            <!-- Agent Dropdown -->
+            <ul *ngIf="user.roleName?.toLowerCase() === 'agent'" class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" (click)="setRechargeLimit(user)">Recharge Limit</a></li>
+              <li><a class="dropdown-item" (click)="setPasswordPermission(user)">Password Permission</a></li>
+              <li><a class="dropdown-item" (click)="allowCreationPermission(user)">Allow Creation Permission</a></li>
+              <li><a class="dropdown-item" (click)="editUser(user)">Edit</a></li>
+              <li><a class="dropdown-item text-danger" (click)="openDeleteModal(user)">Delete</a></li>
+            </ul>
+          </div>
+        </td>
+        <td>{{ user.username }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.parentUser || '-' }}</td>
+        <td>{{ user.roleName }}</td>
+        <td>{{ user.createdAt | date:'short' }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Pagination Section -->
+  <div class="pagination">
+    <!-- Showing range -->
+    <div class="pagination-info">
+      {{ showingRange }}
+    </div>
+
+    <!-- Page controls -->
+    <div class="pagination-controls">
+      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">
+        Prev
+      </button>
+
+      <button *ngFor="let page of pagesArray" (click)="changePage(page)" [class.active]="page === currentPage">
+        {{ page }}
+      </button>
+
+      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">
+        Next
+      </button>
+    </div>
+
+    <!-- Items per page dropdown -->
+    <div class="items-per-page">
+      <label>Rows per page:</label>
+      <select (change)="changeItemsPerPage($event)">
+        <option [value]="5" [selected]="itemsPerPage===5">5</option>
+        <option [value]="10" [selected]="itemsPerPage===10">10</option>
+        <option [value]="20" [selected]="itemsPerPage===20">20</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="modal" *ngIf="showAddUserModal">
+    <div class="modal-content">
+      <span class="close" (click)="closeAddUser()">&times;</span>
+
+      <!-- 👇 Listen for closeModal event from child -->
+      <app-add-user (closeModal)="onAddUserClosed()"></app-add-user>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- Custom Edit User Modal -->
+<div class="custom-modal-overlay" *ngIf="showEditModal">
+  <div class="custom-modal small">
+    <div class="custom-modal-header">
+      <h5>Edit User</h5>
+      <button class="btn-close" (click)="closeModal()">&times;</button>
+    </div>
+
+    <form [formGroup]="editForm" (ngSubmit)="onUpdateUser()">
+      <div class="custom-modal-body">
+        <!-- Username -->
+        <div class="mb-2">
+          <label>User Name</label>
+          <input type="text" formControlName="username" class="form-control form-control-sm">
+        </div>
+
+        <!-- Name -->
+        <div class="mb-2">
+          <label>Name</label>
+          <input type="text" formControlName="name" class="form-control form-control-sm">
+        </div>
+
+        <!-- Email -->
+        <div class="mb-2">
+          <label>Email</label>
+          <input type="email" formControlName="email" class="form-control form-control-sm">
+        </div>
+
+        <!-- Password -->
+        <div class="mb-2 position-relative">
+          <label>New Password</label>
+          <input [type]="showPassword ? 'text' : 'password'" class="form-control form-control-sm"
+            formControlName="password" placeholder="Enter new password">
+          <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'" (click)="togglePassword()"
+            style="cursor:pointer; position:absolute; right:10px; top:36px;"></i>
+        </div>
+      </div>
+
+      <div class="custom-modal-footer">
+        <button class="btn btn-dark btn-sm" type="submit" [disabled]="editForm.invalid">Update</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm" (click)="closeModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Redeem Modal -->
+<div class="custom-modal-overlay" *ngIf="showRedeemModal">
+  <div class="custom-modal small">
+    <div class="custom-modal-header">
+      <h5>Redeem Amount</h5>
+      <button class="btn-close" (click)="closeRedeem()">&times;</button>
+    </div>
+
+    <form [formGroup]="redeemForm" (ngSubmit)="confirmRedeem()">
+      <div class="custom-modal-body">
+        <p class="text-muted small">Redeems may take up to 2 hours</p>
+
+        <!-- Account -->
+        <div class="mb-2">
+          <label>Account</label>
+          <input type="text" class="form-control form-control-sm" formControlName="account" readonly>
+        </div>
+
+        <!-- Redeem Amount -->
+        <div class="mb-2">
+          <label>Redeem Amount</label>
+          <input type="number" class="form-control form-control-sm" formControlName="amount" (input)="calculateTotal()">
+        </div>
+
+        <!-- Fee & Total -->
+        <div class="mb-2 small">
+          Redeem Service Fee @ 5% <br>
+          <strong>Total amount to be redeemed = ${{ totalAmount }}</strong>
+        </div>
+
+        <p class="text-primary small"><em>** The amount has been rounded down to the nearest lower value. **</em></p>
+
+        <!-- Remark -->
+        <div class="mb-2">
+          <label>Remark</label>
+          <textarea class="form-control form-control-sm" formControlName="remark"></textarea>
+        </div>
+
+        <!-- Redeem Remarks -->
+        <div class="mb-2">
+          <label>Redeem Remarks</label>
+          <textarea class="form-control form-control-sm" formControlName="redeemRemark"></textarea>
+        </div>
+      </div>
+
+      <div class="custom-modal-footer">
+        <button type="button" class="btn btn-outline-dark btn-sm" (click)="closeRedeem()">Cancel</button>
+        <button type="submit" class="btn btn-dark btn-sm">Confirm</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- Recharge Limit Modal -->
+<div class="custom-modal-overlay" *ngIf="showRechargeLimitModal">
+  <div class="custom-modal small">
+    <div class="custom-modal-header">
+      <h5>Set Recharge Limits</h5>
+      <button class="btn-close" (click)="closeRechargeLimitModal()">&times;</button>
+    </div>
+
+    <form [formGroup]="rechargeLimitForm" (ngSubmit)="saveRechargeLimit()">
+      <div class="custom-modal-body">
+        <!-- Enable Toggle -->
+        <div class="form-check form-switch mb-3">
+          <input type="checkbox" class="form-check-input" id="limitToggle" formControlName="enableLimit">
+          <label class="form-check-label" for="limitToggle">Enable Recharge Limit Restriction</label>
+        </div>
+
+        <!-- Monthly Limit -->
+        <div class="mb-3">
+          <label>Monthly Recharge Limit</label>
+          <input type="number" formControlName="monthlyLimit" class="form-control form-control-sm"
+            [disabled]="!rechargeLimitForm.get('enableLimit')?.value" placeholder="Enter Monthly Limit">
+        </div>
+
+        <!-- Daily Limit -->
+        <div class="mb-3">
+          <label>Daily Recharge Limit</label>
+          <input type="number" formControlName="dailyLimit" class="form-control form-control-sm"
+            [disabled]="!rechargeLimitForm.get('enableLimit')?.value" placeholder="Enter Daily Limit">
+        </div>
+      </div>
+
+      <div class="custom-modal-footer">
+        <button type="button" class="btn btn-outline-dark btn-sm" (click)="closeRechargeLimitModal()">Cancel</button>
+        <button type="submit" class="btn btn-dark btn-sm" [disabled]="rechargeLimitForm.invalid">Save</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Password Permission Modal -->
+<div class="custom-modal-overlay" *ngIf="showPasswordPermissionModal">
+  <div class="custom-modal small">
+    <div class="custom-modal-header">
+      <h5>Password Permission Settings</h5>
+      <button class="btn-close" (click)="closePasswordPermissionModal()">&times;</button>
+    </div>
+
+    <form [formGroup]="passwordPermissionForm" (ngSubmit)="savePasswordPermission()">
+      <div class="custom-modal-body">
+
+        <!-- Toggle for enabling password permission -->
+        <div class="form-check form-switch mb-3">
+          <input type="checkbox" class="form-check-input" id="enablePasswordPermission"
+            formControlName="enablePermission">
+          <label class="form-check-label" for="enablePasswordPermission">
+            Enable Password Permission
+          </label>
+        </div>
+
+        <!-- Checkbox for allowing agent to reset player password -->
+        <div class="form-check mb-2" *ngIf="passwordPermissionForm.get('enablePermission')?.value">
+          <input type="checkbox" class="form-check-input" id="allowReset" formControlName="allowReset">
+          <label class="form-check-label" for="allowReset">
+            Allow the Agent to set or reset their Player's password.
+          </label>
+        </div>
+
+      </div>
+
+      <div class="custom-modal-footer">
+        <button type="submit" class="btn btn-dark btn-sm">Save Changes</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm"
+          (click)="closePasswordPermissionModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Allow Creation Permission Modal -->
+<div class="custom-modal-overlay" *ngIf="showCreationPermissionModal">
+  <div class="custom-modal small">
+    <div class="custom-modal-header">
+      <h5>Confirm Change</h5>
+      <button class="btn-close" (click)="closeCreationPermissionModal()">&times;</button>
+    </div>
+
+    <div class="custom-modal-body text-center">
+      <p>
+        Do you want to <span class="text-success fw-bold">allow</span> user creation for this agent?
+      </p>
+    </div>
+
+    <div class="custom-modal-footer d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-outline-dark btn-sm" (click)="closeCreationPermissionModal()">Cancel</button>
+      <button type="button" class="btn btn-dark btn-sm" (click)="confirmAllowCreation()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete User Modal -->
+<div class="custom-modal-overlay" *ngIf="showDeleteModal">
+  <div class="custom-modal small">
+    <div class="custom-modal-header">
+      <h5>Delete User</h5>
+      <button class="btn-close" (click)="closeDeleteModal()">&times;</button>
+    </div>
+
+    <form [formGroup]="deleteForm" (ngSubmit)="confirmDeleteUser()">
+      <div class="custom-modal-body">
+
+        <!-- Name -->
+        <div class="mb-2">
+          <label>Name</label>
+          <input type="text" class="form-control form-control-sm" formControlName="name" readonly>
+        </div>
+
+        <!-- Email -->
+        <div class="mb-2">
+          <label>Email</label>
+          <input type="text" class="form-control form-control-sm" formControlName="email" readonly>
+        </div>
+
+        <!-- Confirmation -->
+        <div class="mb-3">
+          <label>To confirm this, type <strong>DELETE</strong></label>
+          <input type="text" class="form-control form-control-sm" formControlName="confirmText"
+            placeholder="Type DELETE">
+        </div>
+      </div>
+
+      <div class="custom-modal-footer d-flex justify-content-end gap-2">
+        <button type="submit" class="btn btn-danger btn-sm" [disabled]="!canDelete()">Delete</button>
+        <button type="button" class="btn btn-outline-dark btn-sm" (click)="closeDeleteModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+

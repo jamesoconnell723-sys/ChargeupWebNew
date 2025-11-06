@@ -1,0 +1,97 @@
+/* Container styling */
+form {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Label */
+label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+/* Input fields */
+input.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+input.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+/* Captcha section */
+.mb-3 {
+  margin-bottom: 18px;
+}
+
+/* Captcha label */
+.mb-3 label {
+  font-size: 15px;
+  color: #444;
+}
+
+/* Button styling */
+button.btn-dark {
+  width: 100%;
+  padding: 12px;
+  background-color: #000;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.1s ease-in-out;
+}
+
+button.btn-dark:hover {
+  background-color: #333;
+}
+
+button.btn-dark:active {
+  transform: scale(0.98);
+}
+/* login.component.css */
+.login-header {
+  background-color: #000; /* black background like your screenshot */
+  text-align: center;
+  padding: 40px 20px;
+  color: white;
+}
+
+.company-name {
+  font-size: 2.5rem;
+  font-weight: bold;
+  font-family: 'Arial Black', sans-serif; /* make it bold and stylish */
+  margin: 0;
+}
+
+.company-name .highlight {
+  color: #ffcc00; /* highlight 'UP' in a different color */
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  margin-top: 10px;
+  font-weight: 400;
+}
+.highlight-outline {
+  color: #fff;
+  text-shadow: 2px 2px 0 #ffcc00, -2px -2px 0 #ffcc00;
+  font-weight: bolder;
+}
+

@@ -1,0 +1,20 @@
+/* Player Layout Navbar */
+.navbar {
+  z-index: 1050;
+}
+
+.btn-profile {
+  background: transparent;
+  border: none;
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}
+
+.btn-profile i {
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+.btn-profile:hover i {
+  color: #0d6efd; /* Bootstrap primary blue on hover */
+}

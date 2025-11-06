@@ -1,0 +1,191 @@
+.recharge-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.left-controls,
+.right-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Search */
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 5px 10px;
+  background: #fff;
+}
+.search-icon {
+  margin-right: 6px;
+  font-size: 14px;
+  color: #666;
+}
+.search-input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
+
+/* Buttons */
+button {
+  padding: 6px 12px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+.filter-btn {
+  background: #000;
+  color: #fff;
+  font-size: 14px;
+}
+.export-btn {
+  background-color: #000;
+  color: #fff;
+}
+.cancel-btn {
+  background: #6c757d;
+  color: #fff;
+}
+.cancel-btn:hover {
+  background: #5a6268;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+thead {
+  background-color: #f1f1f1;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+td.confirmed {
+  color: green;
+  font-weight: bold;
+}
+tr:hover {
+  background-color: #f9f9f9;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.pagination-info {
+  font-size: 14px;
+  color: #555;
+}
+.pagination-controls {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.pagination-controls button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background 0.2s, color 0.2s;
+}
+.pagination-controls button:hover:not(:disabled) {
+  background: #007bff;
+  color: #fff;
+}
+.pagination-controls button:disabled {
+  background: #f1f1f1;
+  color: #aaa;
+  cursor: not-allowed;
+}
+.pagination-controls button.active {
+  background: #007bff;
+  color: #fff;
+  font-weight: bold;
+}
+.items-per-page {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+.items-per-page select {
+  padding: 3px 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Modal */
+.modal-content {
+  border-radius: 12px;
+  height: auto;
+  width: 400px;
+}
+.modal-header,
+.modal-footer {
+  border: none;
+  width: auto;
+}
+/* Export Modal Footer */
+.modal-footer {
+  border-top: none;
+  padding: 12px 16px;
+  display: flex;
+  justify-content: flex-end;  /* align buttons together on the right */
+  gap: 10px;                  /* even spacing between buttons */
+  flex-wrap: wrap;            /* wrap if too small */
+}
+
+/* Make all buttons equal width */
+.modal-footer .btn {
+  flex: 1;                     /* equal width */
+  text-align: center;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 400;
+  border-radius: 6px;
+}
+
+.export-modal {
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+}
+.modal-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+.list-group-item {
+  cursor: pointer;
+}
+.list-group-item.active {
+  background-color: #007bff;
+  color: white;
+}
+@media (min-width: 576px) {
+    .modal-sm {
+        --bs-modal-width: 400px;
+    }
+  }

@@ -1,0 +1,135 @@
+<div class="recharge-container">
+  <h2 class="pt-2">Recharge Records</h2>
+<div class="toolbar">
+  <!-- Left side: Search + Filter -->
+    <div class="left-controls">
+      <div class="search-wrapper">
+        <i class="bi bi-search search-icon"></i>
+        <input type="text" placeholder="Search by User Name" class="search-input" [(ngModel)]="search"
+          (input)="onSearch()" />
+      </div>
+      <button class="btn filter-btn" (click)="openFilterModal()"><i class="bi bi-funnel">Filter</i></button>
+    </div>
+
+    <!-- Right side: Refresh + Export -->
+    <div class="right-controls">
+      <button class="btn btn-sm btn-link text-success refresh-btn" (click)="refresh()" title="Refresh">
+        <i class="fas fa-sync-alt"></i>
+        <span class="ms-1">Refresh</span>
+      </button>
+      <button class="btn btn-dark ms-2" (click)="openExportModal()">
+        <i class="fas fa-download"></i>
+        <span class="ms-1">Export</span>
+      </button>
+    </div>
+  </div>
+
+
+  <table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Recharge</th>
+      <th>Status</th>
+      <th>Remarks</th>
+      <th>Failed Reason</th>
+      <th>Created By</th>
+      <th>Created At</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let r of paginatedRecords">
+      <td>{{r.username}}</td>
+      <td>{{r.recharge}}</td>
+      <td>{{r.status}}</td>
+      <td>{{r.remarks}}</td>
+      <td>{{r.failedReason}}</td>
+      <td>{{r.createdByName || 'N/A'}}</td>
+      <td>{{r.createdAt | date:'short'}}</td>
+    </tr>
+       <tr *ngIf="paginatedRecords.length === 0">
+        <td colspan="5" class="text-center">No records found</td>
+      </tr>
+  </tbody>
+  </table>
+  <ng-template #loadingTpl>
+    <p>Loading records...</p>
+  </ng-template>
+<!-- Pagination footer -->
+<div class="pagination">
+  <div class="pagination-info">
+    {{ showingRange }}
+  </div>
+
+  <div class="pagination-controls">
+    <button (click)="changePage(1)" [disabled]="currentPage === 1">«</button>
+    <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">‹</button>
+
+    <button *ngFor="let page of [].constructor(totalPages); let i = index"
+            [class.active]="currentPage === (i + 1)"
+            (click)="changePage(i + 1)">
+      {{ i + 1 }}
+    </button>
+
+    <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">›</button>
+    <button (click)="changePage(totalPages)" [disabled]="currentPage === totalPages">»</button>
+  </div>
+
+  <div class="items-per-page">
+    <label for="items">Items per page:</label>
+    <select id="items" (change)="changeItemsPerPage($event)" [value]="itemsPerPage">
+      <option *ngFor="let size of [5, 10, 20, 50]" [value]="size">{{ size }}</option>
+    </select>
+  </div>
+</div>
+</div>
+
+
+<!-- 🔹 Filter Modal -->
+<div class="modal fade" [class.show]="showFilterModal" [style.display]="showFilterModal ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Filter Options</h5>
+        <button type="button" class="btn-close" (click)="cancelFilter()"></button>
+      </div>
+      <div class="modal-body">
+        <ul class="list-group">
+          <li *ngFor="let status of statusList"
+              class="list-group-item"
+              [class.active]="tempSelectedStatus === status"
+              (click)="selectTempStatus(status)">
+            {{ status }}
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="applyFilter()">Apply</button>
+        <button class="btn btn-secondary" (click)="cancelFilter()">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" [class.show]="showExportModal" [style.display]="showExportModal ? 'block' : 'none'">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content export-modal">
+      <div class="modal-header">
+        <h5 class="modal-title">Select Month to Export</h5>
+        <!-- close button -->
+        <button type="button" class="btn-close" aria-label="Close" (click)="closeExportModal()"></button>
+      </div>
+
+      <div class="modal-body">
+        <label for="monthPicker" class="form-label">Month</label>
+        <input type="month" id="monthPicker" class="form-control" [(ngModel)]="selectedMonth" />
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn cancel-btn" (click)="closeExportModal()">Cancel</button>
+        <button class="btn export-btn" (click)="exportPdf()">Export PDF</button>
+        <button class="btn export-btn" (click)="exportExcel()">Export Excel</button>
+      </div>
+    </div>
+  </div>
+</div>
