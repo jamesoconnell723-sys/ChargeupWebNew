@@ -41,10 +41,10 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_WAVE_08EDB420F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          output_location: "ChargeUp/dist/ChargeUp" # where your built files are
-          ENABLE_ORYX_BUILD: false                      # you already built manually
-          api_location: ""                          # no API folder
-          app_location: "ChargeUp"                  # where your Angular project lives
+          app_location: "ChargeUp/dist/ChargeUp"   # ✅ Deploy the built output directly
+          output_location: ""                      # ✅ no nested dist
+          skip_app_build: true
+          api_location: ""
 
 
   close_pull_request_job:
@@ -56,6 +56,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_WAVE_08EDB420F }}
           action: "close"
+
 
 
 
