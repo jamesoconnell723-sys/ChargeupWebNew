@@ -41,9 +41,11 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_WAVE_08EDB420F }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "."                         
-          app_artifact_location: "ChargeUp/dist/ChargeUp"
-          skip_app_build: true
+          app_location: "ChargeUp/dist/ChargeUp"  # ✅ Built app path
+          app_artifact_location: ""               # ✅ not needed
+          skip_app_build: true                    # ✅ prevents Oryx build
+          api_location: ""                        # ✅ no API folder
+
 
 
   close_pull_request_job:
@@ -55,6 +57,7 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_THANKFUL_WAVE_08EDB420F }}
           action: "close"
+
 
 
 
